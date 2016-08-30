@@ -15,33 +15,36 @@ public class Hangman
         private  String secret;
         private double frequency;
         private Scanner sc;
-        private int difficulity;
+        private int level;
 
         public Hangman (){
          //  Getting  secret word from Words API
             sc = new Scanner(System.in);
-            this.difficulity = sc.nextInt();
+            this.level = sc.nextInt();
             getSecretword();
         }
 
         private  void getSecretword() {
 
             try{
+
                 HttpResponse<JsonNode> response;
-                switch(this.difficulity) {
-                    case 1: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/the/frequency").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                switch(this.level) {
+                    case 1: response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=7&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                             break;
+                    case 2: response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMin=3 &frequencyMax=4 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
-                    case 2: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/yesterday/frequency").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
-                            break;
-                    case 3: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/afore/frequency").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
-                    default:response = Unirest.get("https://wordsapiv1.p.mashape.com/words/the/frequency").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                    case 3:  response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMax=1 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                             break;
+                    default:response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMax=1 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
                 }
+
                 JSONObject obj = new JSONObject();
                 obj = response.getBody().getObject();
 
                 this.secret = obj.getString("word");
-                this.frequency = obj.getJSONObject("frequency").getDouble("diversity");
+                this.frequency = obj.getDouble("frequency");
             }
             catch(UnirestException e){
                 System.out.println(e.getMessage());
@@ -57,6 +60,7 @@ public class Hangman
         private static void printWon() {
             System.out.println();
             System.out.println(" You WON and survived.");
+            System.out.println();
             System.out.println("Do you want to play again? Hangman votes no. Leave empty to exit.");
         }
 
@@ -253,14 +257,14 @@ public class Hangman
             System.out.println(" You guess a single letter at a time. Numbers, spaces and punctuation are not allowed as input to the game.");
             System.out.println("");
             System.out.println(" The game has three levels. Choose the level you want to play. ");
-
-
-
         }
         private static void DifficulityLevel() {
+            System.out.println("");
             System.out.println(" Input: 1 to play easy level");
             System.out.println(" Input: 2 to play middle level");
             System.out.println(" Input: 3 to play difficult level");
+            System.out.println("");
+            System.out.println("");
 
         }
         public static void main(String[] args) throws IOException
@@ -274,14 +278,14 @@ public class Hangman
 
                     DifficulityLevel();
                     Hangman hangman = new Hangman();
-                    // Unirest.shutdown();
+
                     if (hangman.secret.equals("")) {
                         exitGame = true;
                     }
                      else {
                         System.out.println();
-                        System.out.println(" I have a secret word that you have to guess to rescue yourself from hanging :) ");
-                        System.out.println(" Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
+                        System.out.println(" There is a secret word that you have to guess to rescue yourself from hanging :) ");
+                                     //System.out.println(" Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
 
                         hangman.secret = hangman.secret.toLowerCase();
                         String alreadyGuessed = " ";
@@ -299,7 +303,12 @@ public class Hangman
 
                             char guess;
                             guess = hangman.getChar();
-                            alreadyGuessed += " " + guess;
+                            if(alreadyGuessed.indexOf(guess) >= 0) {
+                                System.out.println(" You have already tried that letter. Try other letters ");
+                                System.exit(0);
+                            }
+                            else
+                                alreadyGuessed += " " + guess;
 
                             System.out.println();
                             System.out.println();
@@ -317,13 +326,12 @@ public class Hangman
                             } else {
                                 hangP++;
                                 System.out.println(" Wrong guess! ");
-                                System.out.println( " You have tried these letter " + alreadyGuessed);
+                                System.out.println( " You have guessed the following letters so far: " + alreadyGuessed);
                                 if (hangP == 15) {
                                     dead = true;
                                 }
                             }
                             // progress of the game
-
                             printHangMan(hangP);
                             System.out.println("~~~~~~~~~~~~");
                             System.out.println();
