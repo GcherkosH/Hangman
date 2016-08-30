@@ -18,7 +18,7 @@ public class Hangman
         private int level;
 
         public Hangman (){
-         //  Getting  secret word from Words API
+                        // Getting  secret word from Words API
             sc = new Scanner(System.in);
             this.level = sc.nextInt();
             getSecretword();
@@ -27,15 +27,14 @@ public class Hangman
         private  void getSecretword() {
 
             try{
-
                 HttpResponse<JsonNode> response;
                 switch(this.level) {
-                    case 1: response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=7&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
-                             break;
-                    case 2: response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMin=3 &frequencyMax=4 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                    case 1: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=7&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
-                    case 3:  response =Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMax=1 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
-                             break;
+                    case 2: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMin=3 &frequencyMax=4 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                            break;
+                    case 3: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMax=2&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                        break;
                     default:response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMax=1 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
                 }
@@ -53,7 +52,7 @@ public class Hangman
 
         private static void printDefeat() {
             System.out.println();
-            System.out.println(" Sorry you will be hanged.  ");
+            System.out.println(" Sorry you will be hanged. Just kidding! ");
             System.out.println(" Do you want to play again? ");
         }
 
@@ -96,125 +95,70 @@ public class Hangman
                 System.out.println("");
             }
             if (hangP == 1) {
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("|");
+                System.out.println(" --------");
+                System.out.println("         |");
+                System.out.println("         |");
+                System.out.println("         |");
+                System.out.println("         |");
+                System.out.println("         |");
             }
             if (hangP == 2) {
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("|");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println("          |");
+                System.out.println("          |");
+                System.out.println("          |");
             }
             if (hangP == 3) {
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("|");
-                System.out.println("|");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println(" |        |");
+                System.out.println("          |");
+                System.out.println("          |");
             }
             if (hangP == 4) {
-                System.out.println("");
-                System.out.println("       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println("/|        |");
+                System.out.println("          |");
+                System.out.println("          |");
             }
             if (hangP == 5) {
-                System.out.println("");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println("/|\\       |");
+                System.out.println("          |");
+                System.out.println("          |");
             }
             if (hangP == 6) {
-                System.out.println("__");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println("/|\\       |");
+                System.out.println("/         |");
+                System.out.println("          |");
             }
             if (hangP == 7) {
-                System.out.println("____");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println("          |");
+                System.out.println(" 0        |");
+                System.out.println("/|\\       |");
+                System.out.println("/ \\       |");
+                System.out.println("          |");
             }
             if (hangP == 8) {
-                System.out.println("________");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
+                System.out.println(" ---------");
+                System.out.println(" |        |");
+                System.out.println(" 0        |");
+                System.out.println("/|\\       |");
+                System.out.println("/ \\       |");
+                System.out.println("          |");
             }
-            if (hangP == 9) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 10) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|       0");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 11) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|      \\0");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 12) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|      _0/");
-                System.out.println("|       ");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 13) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|      \\0_");
-                System.out.println("|       |");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 14) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|      _0/");
-                System.out.println("|       |_");
-                System.out.println("|       ");
-                System.out.println("|");
-            }
-            if (hangP == 15) {
-                System.out.println("________");
-                System.out.println("|       |");
-                System.out.println("|      \\0_ ");
-                System.out.println("|       |_");
-                System.out.println("|       /");
-                System.out.println("|");
-            }
+
         }
 
         private static int getLetters(int letters, String word, char guess) {
@@ -239,11 +183,6 @@ public class Hangman
             char guess;
             sc = new Scanner(System.in);
             guess = sc.next().charAt(0);
-            if (!(guess >= 'a' && guess <= 'z') || (guess>= 'A' && guess <= 'Z'))
-            {
-                System.out.println(" Please enter letters as input for the game. Numbers and punctuation marks are not valid inputs. ");
-                System.exit(0);
-            }
             return guess;
         }
         private static void printInstructions() {
@@ -267,15 +206,14 @@ public class Hangman
             System.out.println("");
 
         }
+
         public static void main(String[] args) throws IOException
         {
             try {
-
                 Boolean exitGame = false;
                 printInstructions();
 
                 while (!exitGame) {
-
                     DifficulityLevel();
                     Hangman hangman = new Hangman();
 
@@ -284,12 +222,14 @@ public class Hangman
                     }
                      else {
                         System.out.println();
-                        System.out.println(" There is a secret word that you have to guess to rescue yourself from hanging :) ");
+                        System.out.println(" Here is a secret word that you have to guess to rescue yourself from hanging :) ");
                                      //System.out.println(" Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
 
                         hangman.secret = hangman.secret.toLowerCase();
                         String alreadyGuessed = " ";
                         String lettersGot = "";
+                        printWordLine(hangman.secret, lettersGot);
+
                         boolean won = false;
                         boolean dead = false;
                         boolean correct;
@@ -303,9 +243,21 @@ public class Hangman
 
                             char guess;
                             guess = hangman.getChar();
-                            if(alreadyGuessed.indexOf(guess) >= 0) {
-                                System.out.println(" You have already tried that letter. Try other letters ");
-                                System.exit(0);
+                            if(alreadyGuessed.indexOf(guess) >= 0 || !(guess >= 'a' && guess <= 'z') || (guess>= 'A' && guess <= 'Z') ) {
+                                System.out.println(" Oops either you have repeated a letter or entered invaid input. Try other letters ");
+                                System.out.println("");
+                                          // progress of the game
+                                hangP++;
+                                printHangMan(hangP);
+                                System.out.println("~~~~~~~~~~~~");
+                                System.out.println();
+                                printWordLine(hangman.secret, lettersGot);
+
+                                if (hangP == 8) {
+                                    dead = true;
+                                    printDefeat();
+                                }
+                                continue;
                             }
                             else
                                 alreadyGuessed += " " + guess;
@@ -327,7 +279,7 @@ public class Hangman
                                 hangP++;
                                 System.out.println(" Wrong guess! ");
                                 System.out.println( " You have guessed the following letters so far: " + alreadyGuessed);
-                                if (hangP == 15) {
+                                if (hangP == 8) {
                                     dead = true;
                                 }
                             }
