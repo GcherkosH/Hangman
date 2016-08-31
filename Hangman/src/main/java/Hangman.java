@@ -6,21 +6,31 @@
     import com.mashape.unirest.http.Unirest;
     import com.mashape.unirest.http.exceptions.UnirestException;
 
+    import org.apache.http.client.HttpClient;
+    import org.apache.http.client.config.CookieSpecs;
+    import org.apache.http.client.config.RequestConfig;
+    import org.apache.http.impl.client.HttpClientBuilder;
+    import org.apache.http.impl.client.HttpClients;
+    import org.apache.http.impl.client.CloseableHttpClient;
+    import  java.lang.SuppressWarnings;
+
     import org.json.*;
     import java.util.Scanner;
     import java.io.*;
 
 public class Hangman
     {
-        private  String secret;
-        private double frequency;
+        private  static String secret;
+        private static double frequency;
         private Scanner sc;
-        private int level;
+        private static int level;
+        private static String cont;
 
         public Hangman (){
-                        // Getting  secret word from Words API
             sc = new Scanner(System.in);
-            this.level = sc.nextInt();
+            level = sc.nextInt();
+            cont = "Yes";
+                    // Getting  secret word from Words API
             getSecretword();
         }
 
@@ -28,53 +38,59 @@ public class Hangman
 
             try{
                 HttpResponse<JsonNode> response;
-                switch(this.level) {
+
+                /*RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
+                HttpClientBuilder customizedClientBuilder = HttpClients.custom().setDefaultRequestConfig(customizedRequestConfig);
+                CloseableHttpClient client = customizedClientBuilder.build(); // customized client,*/
+
+                switch(level) {
                     case 1: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=7&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
-                    case 2: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMin=3 &frequencyMax=4 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
+                    case 2: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=3&frequencyMax=4&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
                     case 3: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMax=2&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                         break;
                     default:response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?hasDetails=typeOf&frequencyMax=1 &random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
                 }
-
-                JSONObject obj = new JSONObject();
-                obj = response.getBody().getObject();
-
-                this.secret = obj.getString("word");
-                this.frequency = obj.getDouble("frequency");
+                JSONObject obj = response.getBody().getObject();
+                secret = obj.getString("word");
+                frequency = obj.getDouble("frequency");
             }
             catch(UnirestException e){
                 System.out.println(e.getMessage());
             }
         }
 
-        private static void printDefeat() {
+        private static void Defeat() {
+            Scanner sc = new Scanner(System.in);
             System.out.println();
-            System.out.println(" Sorry you will be hanged. Just kidding! ");
-            System.out.println(" Do you want to play again? ");
+            System.out.println(" You are hanged. Just kidding! ");
+            System.out.println("This is the word " + secret);
+            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit");
+            cont = sc.next();
         }
 
-        private static void printWon() {
+        private static void Won() {
+            Scanner sc = new Scanner(System.in);
             System.out.println();
             System.out.println(" You WON and survived.");
             System.out.println();
-            System.out.println("Do you want to play again? Hangman votes no. Leave empty to exit.");
+            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit ");
+            cont = sc.next();
         }
 
-        private static void printWordLine(String word, String lettersGot) {
-            boolean printDash = true;
-
+        private static void pWordLine(String word, String lettersGot) {
+            boolean pDash = true;
             for (int i = 0; i < word.length(); i++) {
-                printDash = true;
+                pDash = true;
                 for (int j = 0; j < lettersGot.length(); j++) {
                     if (lettersGot.charAt(j) == word.charAt(i)) {
                         System.out.print(word.charAt(i) + " ");
-                        printDash = false;
+                        pDash = false;
                     }
                 }
-                if (printDash) {
+                if (pDash) {
                     System.out.print("_ ");
                 }
             }
@@ -83,10 +99,10 @@ public class Hangman
             System.out.println();
         }
 
-        private static void printHangMan(int hangP) {
+        private static void pHangMan(int hangC) {
             System.out.println();
 
-            if (hangP == 0) {
+            if (hangC == 0) {
                 System.out.println("");
                 System.out.println("");
                 System.out.println("");
@@ -94,7 +110,7 @@ public class Hangman
                 System.out.println("");
                 System.out.println("");
             }
-            if (hangP == 1) {
+            if (hangC == 1) {
                 System.out.println(" --------");
                 System.out.println("         |");
                 System.out.println("         |");
@@ -102,7 +118,7 @@ public class Hangman
                 System.out.println("         |");
                 System.out.println("         |");
             }
-            if (hangP == 2) {
+            if (hangC == 2) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -110,7 +126,7 @@ public class Hangman
                 System.out.println("          |");
                 System.out.println("          |");
             }
-            if (hangP == 3) {
+            if (hangC == 3) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -118,7 +134,7 @@ public class Hangman
                 System.out.println("          |");
                 System.out.println("          |");
             }
-            if (hangP == 4) {
+            if (hangC == 4) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -126,7 +142,7 @@ public class Hangman
                 System.out.println("          |");
                 System.out.println("          |");
             }
-            if (hangP == 5) {
+            if (hangC == 5) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -134,7 +150,7 @@ public class Hangman
                 System.out.println("          |");
                 System.out.println("          |");
             }
-            if (hangP == 6) {
+            if (hangC == 6) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -142,7 +158,7 @@ public class Hangman
                 System.out.println("/         |");
                 System.out.println("          |");
             }
-            if (hangP == 7) {
+            if (hangC == 7) {
                 System.out.println(" ---------");
                 System.out.println("          |");
                 System.out.println(" 0        |");
@@ -150,7 +166,7 @@ public class Hangman
                 System.out.println("/ \\       |");
                 System.out.println("          |");
             }
-            if (hangP == 8) {
+            if (hangC == 8) {
                 System.out.println(" ---------");
                 System.out.println(" |        |");
                 System.out.println(" 0        |");
@@ -170,7 +186,7 @@ public class Hangman
             return letters;
         }
 
-        private static boolean getVerdict(String word, char guess) {
+        private static boolean existenceCheck(String word, char guess) {
             for (int i = 0; i < word.length(); i++) {
                 if (guess == word.charAt(i)) {
                     return true;
@@ -191,20 +207,18 @@ public class Hangman
             System.out.println("");
             System.out.println("                HANGMAN GAME ");
             System.out.println("");
-            System.out.println("                  Instructions    ");
+            System.out.println("                Instructions    ");
             System.out.println(" The game is about guessing a secret word by entering a single letter at a time ");
             System.out.println(" You guess a single letter at a time. Numbers, spaces and punctuation are not allowed as input to the game.");
             System.out.println("");
             System.out.println(" The game has three levels. Choose the level you want to play. ");
         }
-        private static void DifficulityLevel() {
+        private static void difficultyLevel() {
             System.out.println("");
             System.out.println(" Input: 1 to play easy level");
             System.out.println(" Input: 2 to play middle level");
             System.out.println(" Input: 3 to play difficult level");
             System.out.println("");
-            System.out.println("");
-
         }
 
         public static void main(String[] args) throws IOException
@@ -213,31 +227,29 @@ public class Hangman
                 Boolean exitGame = false;
                 printInstructions();
 
-                while (!exitGame) {
-                    DifficulityLevel();
-                    Hangman hangman = new Hangman();
+                while (!exitGame && !(cont =="No")) {
 
-                    if (hangman.secret.equals("")) {
+                    difficultyLevel();
+                    Hangman hangman = new Hangman();
+                    if (secret.equals("")) {
                         exitGame = true;
                     }
                      else {
                         System.out.println();
                         System.out.println(" Here is a secret word that you have to guess to rescue yourself from hanging :) ");
-                                     //System.out.println(" Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
-
-                        hangman.secret = hangman.secret.toLowerCase();
+                                     System.out.println("    Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
+                        secret = secret.toLowerCase();
                         String alreadyGuessed = " ";
                         String lettersGot = "";
-                        printWordLine(hangman.secret, lettersGot);
+                        pWordLine(secret, lettersGot);
 
                         boolean won = false;
                         boolean dead = false;
                         boolean correct;
-                        int hangP = 0;
+                        int hangC = 0;
                         int numLettersGot = 0;
 
                         while (!won && !dead) {
-
                             // Get a guess
                             System.out.println(" Enter a letter you guess is in the word.");
 
@@ -247,15 +259,15 @@ public class Hangman
                                 System.out.println(" Oops either you have repeated a letter or entered invaid input. Try other letters ");
                                 System.out.println("");
                                           // progress of the game
-                                hangP++;
-                                printHangMan(hangP);
+                                hangC++;
+                                pHangMan(hangC);
                                 System.out.println("~~~~~~~~~~~~");
                                 System.out.println();
-                                printWordLine(hangman.secret, lettersGot);
+                                pWordLine(secret, lettersGot);
 
-                                if (hangP == 8) {
+                                if (hangC == 8) {
                                     dead = true;
-                                    printDefeat();
+                                    Defeat();
                                 }
                                 continue;
                             }
@@ -265,39 +277,38 @@ public class Hangman
                             System.out.println();
                             System.out.println();
 
-                            // correct guess?
-                            correct = getVerdict(hangman.secret, guess);
+                            // checks correctness of guess
+                            correct = existenceCheck(secret, guess);
                             if (correct) {
                                 lettersGot += guess;
-                                numLettersGot = getLetters(numLettersGot, hangman.secret, guess);
+                                numLettersGot = getLetters(numLettersGot, secret, guess);
                                 System.out.println(" Correct guess! ");
                                 System.out.println( " You have guessed the following letters so far: " + alreadyGuessed);
-                                if (numLettersGot == hangman.secret.length()) {
+                                if (numLettersGot == secret.length()) {
                                     won = true;
                                 }
                             } else {
-                                hangP++;
+                                hangC++;
                                 System.out.println(" Wrong guess! ");
                                 System.out.println( " You have guessed the following letters so far: " + alreadyGuessed);
-                                if (hangP == 8) {
+                                if (hangC == 8) {
                                     dead = true;
                                 }
                             }
-                            // progress of the game
-                            printHangMan(hangP);
+                            // Displays progress of the game
+                            pHangMan(hangC);
                             System.out.println("~~~~~~~~~~~~");
                             System.out.println();
-                            printWordLine(hangman.secret, lettersGot);
+                            pWordLine(secret, lettersGot);
                             if (dead) {
-                                printDefeat();
+                                Defeat();
                             } else if (won) {
-                                printWon();
+                                Won();
                             }
                         }
                     }
                 }
             }
-
             catch (Exception e){
                 System.out.println(e.getMessage());
 
