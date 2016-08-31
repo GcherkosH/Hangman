@@ -24,7 +24,7 @@ public class Hangman
         private static double frequency;
         private Scanner sc;
         private static int level;
-        private static String cont;
+        private static String cont ="Yes";
 
         public Hangman (){
             sc = new Scanner(System.in);
@@ -66,7 +66,7 @@ public class Hangman
             Scanner sc = new Scanner(System.in);
             System.out.println();
             System.out.println(" You are hanged. Just kidding! ");
-            System.out.println("This is the word " + secret);
+            System.out.println("The word you failed to guess is: " + secret);
             System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit");
             cont = sc.next();
         }
@@ -227,8 +227,7 @@ public class Hangman
                 Boolean exitGame = false;
                 printInstructions();
 
-                while (!exitGame && !(cont =="No")) {
-
+                while (!exitGame && !(cont.equalsIgnoreCase("No"))) {
                     difficultyLevel();
                     Hangman hangman = new Hangman();
                     if (secret.equals("")) {
@@ -250,7 +249,7 @@ public class Hangman
                         int numLettersGot = 0;
 
                         while (!won && !dead) {
-                            // Get a guess
+                            // Get a guess from a player
                             System.out.println(" Enter a letter you guess is in the word.");
 
                             char guess;
@@ -258,13 +257,12 @@ public class Hangman
                             if(alreadyGuessed.indexOf(guess) >= 0 || !(guess >= 'a' && guess <= 'z') || (guess>= 'A' && guess <= 'Z') ) {
                                 System.out.println(" Oops either you have repeated a letter or entered invaid input. Try other letters ");
                                 System.out.println("");
-                                          // progress of the game
+                                          // prints progress of the game
                                 hangC++;
                                 pHangMan(hangC);
                                 System.out.println("~~~~~~~~~~~~");
                                 System.out.println();
                                 pWordLine(secret, lettersGot);
-
                                 if (hangC == 8) {
                                     dead = true;
                                     Defeat();
