@@ -6,14 +6,6 @@
     import com.mashape.unirest.http.Unirest;
     import com.mashape.unirest.http.exceptions.UnirestException;
 
-    import org.apache.http.client.HttpClient;
-    import org.apache.http.client.config.CookieSpecs;
-    import org.apache.http.client.config.RequestConfig;
-    import org.apache.http.impl.client.HttpClientBuilder;
-    import org.apache.http.impl.client.HttpClients;
-    import org.apache.http.impl.client.CloseableHttpClient;
-    import  java.lang.SuppressWarnings;
-
     import org.json.*;
     import java.util.Scanner;
     import java.io.*;
@@ -30,19 +22,15 @@ public class Hangman
             sc = new Scanner(System.in);
             level = sc.nextInt();
             cont = "Yes";
-                    // Getting  secret word from Words API
-            getSecretword();
+            getSecretword();   //  A function for getting a secret word using Words API
         }
-
         private  void getSecretword() {
+
+            // Cookies warning to be fixed
 
             try{
                 HttpResponse<JsonNode> response;
-
-                /*RequestConfig customizedRequestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build();
-                HttpClientBuilder customizedClientBuilder = HttpClients.custom().setDefaultRequestConfig(customizedRequestConfig);
-                CloseableHttpClient client = customizedClientBuilder.build(); // customized client,*/
-
+                // Getting a random word by using Words API based on its frequency.
                 switch(level) {
                     case 1: response = Unirest.get("https://wordsapiv1.p.mashape.com/words/?frequencyMin=7&random=true").header("X-Mashape-Key", "1uluTAFVyamshwzx4H2LKMOnoVpqp1fhphojsnYcnQ6il802it").header("Accept", "application/json").asJson();
                             break;
@@ -67,7 +55,7 @@ public class Hangman
             System.out.println();
             System.out.println(" You are hanged. Just kidding! ");
             System.out.println("The word you failed to guess is: " + secret);
-            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit");
+            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit. ");
             cont = sc.next();
         }
 
@@ -76,7 +64,7 @@ public class Hangman
             System.out.println();
             System.out.println(" You WON and survived.");
             System.out.println();
-            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit ");
+            System.out.println(" Thank you for playing Hangman game. Do you want to play again? To continue enter \"Yes\" or \"No\" to quit. ");
             cont = sc.next();
         }
 
@@ -94,7 +82,6 @@ public class Hangman
                     System.out.print("_ ");
                 }
             }
-
             System.out.println();
             System.out.println();
         }
@@ -236,7 +223,7 @@ public class Hangman
                      else {
                         System.out.println();
                         System.out.println(" Here is a secret word that you have to guess to rescue yourself from hanging :) ");
-                                     System.out.println("    Hint:  the secret word has frequency usage of  " + hangman.frequency + " in English language");
+                        System.out.println(" Hint: The secret word has a frequency of " + hangman.frequency + " in English language");
                         secret = secret.toLowerCase();
                         String alreadyGuessed = " ";
                         String lettersGot = "";
@@ -257,7 +244,8 @@ public class Hangman
                             if(alreadyGuessed.indexOf(guess) >= 0 || !(guess >= 'a' && guess <= 'z') || (guess>= 'A' && guess <= 'Z') ) {
                                 System.out.println(" Oops either you have repeated a letter or entered invaid input. Try other letters ");
                                 System.out.println("");
-                                          // prints progress of the game
+                                // prints progress of the game
+
                                 hangC++;
                                 pHangMan(hangC);
                                 System.out.println("~~~~~~~~~~~~");
@@ -270,8 +258,7 @@ public class Hangman
                                 continue;
                             }
                             else
-                                alreadyGuessed += " " + guess;
-
+                            alreadyGuessed += " " + guess;
                             System.out.println();
                             System.out.println();
 
@@ -313,4 +300,3 @@ public class Hangman
             }
         }
 }
-
