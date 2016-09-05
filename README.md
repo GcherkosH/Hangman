@@ -39,6 +39,7 @@ Hangman Game by using Words API
      i. The program allows the player until he/she makes 8 mistakes.
      ii. Frequency: When a word is retrieved using Words API ,it has a frequency score ranging from approximately 1 to 7.
             Game levels depend on frequency of words in English.
+            
                     1. Easy:
                     
     	 		          Frequency >= 7
@@ -50,8 +51,10 @@ Hangman Game by using Words API
                            Frequency <=2
 
 4. Implementation details:
-        Class  - Hangman
-        Methods
+
+        Class:  - Hangman
+        
+        Methods:
                - getSecretword()
                         Gets a secret word by using Words API
                - Defeat()
