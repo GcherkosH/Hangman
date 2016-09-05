@@ -19,6 +19,7 @@ Hangman Game by using Words API
         6. Program:  Requests the player to start guessing letters in the word.
         7. Player: Enters letters that he/she think is in the secret word
         8. Program: checks if the entered letter is in the word
+        
             A. If the guess is correct, it puts the letter in its right position in the word and presents it to the player
 
                     i.  If the length of correctly guessed letters is equal to the length of the secret word, the players wins.
@@ -38,11 +39,14 @@ Hangman Game by using Words API
      i. The program allows the player until he/she makes 8 mistakes.
      ii. Frequency: When a word is retrieved using Words API ,it has a frequency score ranging from approximately 1 to 7.
             Game levels depend on frequency of words in English.
-                    1. Easy
+                    1. Easy:
+                    
     	 		          Frequency >= 7
-                    2.  Middle
+    	 		          
+                    2.  Middle:
  			               3 <= Frequency <= 4
-                    3. Difficult
+ 			               
+                    3. Difficult:
                            Frequency <=2
 
 4. Implementation details:
