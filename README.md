@@ -27,13 +27,18 @@ Hangman Game by using Words API
                     ii. Otherwise, it goes back to step 6.
                     
             B. Otherwise, it starts drawing the Hagman
+            
                     - There are 8 steps of drawing the hangman.
+                    
                         i. If eight mistakes are made by the player, the Hangman drawing  completes and the player loses the game.  (It goes to step 9)
+                        
                         ii. Otherwise, it goes  back to step 6.
                         
         9. Program: Asks the player if he/she wants to play again.
+        
                 i. If yes, it goes back to step 3.
                 ii. Otherwise, it quits
+                
 3. Assumptions:
 
      i. The program allows the player until he/she makes 8 mistakes.
